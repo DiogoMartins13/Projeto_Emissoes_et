@@ -1,0 +1,416 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      -->
+<title>Projeto de Emiss&otilde;es - Estudo da efici&ecirc;ncia t&eacute;rmica</title>
+<meta name="generator" content="MATLAB 23.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2025-01-30">
+<meta name="DC.source" content="Eficiencia_Thermal.m">
+<style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style>
+</head>
+<body>
+<div class="content">
+<h1>Projeto de Emiss&otilde;es - Estudo da efici&ecirc;ncia t&eacute;rmica</h1>
+<!--introduction-->
+<p>Realizado por: &Iacute;ris Alves (105856), Carolina Martins (105872), Raquel Figueira (105896), Diogo Martins (105980), Francisco Rodrigues (106298) e Rafael Santos (106599)</p>
+<!--/introduction-->
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#1">Limpeza de mem&oacute;ria</a>
+</li>
+<li>
+<a href="#2">Constantes</a>
+</li>
+<li>
+<a href="#3">C&aacute;lculos</a>
+</li>
+<li>
+<a href="#4">Plots</a>
+</li>
+</ul>
+</div>
+<h2 id="1">Limpeza de mem&oacute;ria</h2>
+<pre class="codeinput">clc, clearvars, close <span class="string">all</span>
+</pre>
+<h2 id="2">Constantes</h2>
+<pre class="codeinput">
+<span class="comment">% Termodin&acirc;micas</span>
+R = 287;                        <span class="comment">% Constante universal dos gases para o ar</span>
+kf = 1.4;                       <span class="comment">% ratio of the specific heat do ar para baixas temperaturas</span>
+kq = 1.333;                     <span class="comment">% ratio of the specific heat do ar para altas temperaturas</span>
+cpf = (kf * R)/(kf - 1);        <span class="comment">% Calor espec&iacute;fico a press&atilde;o constante a baixas temperaturas</span>
+cpq = (kq * R)/(kq - 1);        <span class="comment">% Calor espec&iacute;fico a press&atilde;o constante a altas temperaturas</span>
+
+<span class="comment">% Efici&ecirc;ncias</span>
+size = 1001;                    <span class="comment">% Tamanho dos vetores</span>
+eta_c = 0.822;                  <span class="comment">% Efici&ecirc;ncia isentr&oacute;pica do compressor</span>
+eta_t = 0.882;                  <span class="comment">% Efici&ecirc;ncia isentr&oacute;pica da turbina</span>
+eta_thermal = linspace(0.2,1,size); <span class="comment">% Valores arbitr&aacute;rios</span>
+eta_n = 0.97;                   <span class="comment">% Efici&ecirc;ncia isentr&oacute;pica do nozzle</span>
+
+<span class="comment">% Design</span>
+Rp = 8.3;           <span class="comment">% R&aacute;cio de press&atilde;o</span>
+m = 24;             <span class="comment">% Mass Flow Rate (kg/s)</span>
+
+<span class="comment">% Condi&ccedil;&otilde;es Exteriores - a cruise altitude 40000ft</span>
+V0 = 563*10^3/3600;     <span class="comment">% Velocidade de entrada do ar</span>
+Ta = 216.65;            <span class="comment">% Temperatura atmosf&eacute;rica</span>
+pa = 18832.8;           <span class="comment">% Press&atilde;o atmosf&eacute;rica</span>
+den = 0.30333;          <span class="comment">% Densidade do ar</span>
+a = sqrt(kf*R*Ta);      <span class="comment">% Velocidade do som</span>
+Ma = V0/a;              <span class="comment">% N&uacute;mero de Mach</span>
+
+H_ker = 43.260*10^6;  <span class="comment">% Calorific value of kerosene</span>
+</pre>
+<h2 id="3">C&aacute;lculos</h2>
+<pre class="codeinput">p2 = pa + (den*V0^2)/2;     <span class="comment">% Aproxima&ccedil;&atilde;o de que p2 &eacute; igual &agrave; press&atilde;o de total em a</span>
+T2 = Ta;                    <span class="comment">% Aproxima&ccedil;&atilde;o de que T2 = Ta</span>
+pe = pa;                    <span class="comment">% Aproxima&ccedil;&atilde;o de que a press&atilde;o de sa&iacute;da &eacute; igual &agrave; press&atilde;o a</span>
+p3 = Rp*p2;
+
+T3s = T2*(p3/p2)^((kf-1)/kf);
+
+<span class="comment">% Dado a falta de equa&ccedil;&otilde;es para o n&uacute;mero de vari&aacute;veis, efetua-se um</span>
+<span class="comment">% processo iterativo de erro &lt; 0.001</span>
+
+<span class="keyword">for</span> i=1:size
+
+        T3(i) = T2 + (T3s - T2)./eta_c;
+        W(i) = m*(cpf*(T3(i)-T2));          <span class="comment">% Trabalho necess&aacute;rio para o compressor</span>
+
+        p4(i) = p3;
+
+        T4(i) = 1260;     <span class="comment">%valor de itera&ccedil;&atilde;o inicial</span>
+        erro = 1;         <span class="comment">% Iniciar a vari&aacute;vel erro</span>
+        it(i) = 0;        <span class="comment">% Zerar o contador de itera&ccedil;&otilde;es</span>
+
+        <span class="keyword">while</span>(1)
+
+            T4_it(i) = T4(i);   <span class="comment">% Defini&ccedil;&atilde;o do valor da itera&ccedil;&atilde;o inicial</span>
+
+            T5(i) = T4(i) - W(i)/(m*cpq);
+            T5s(i) = T4(i) + cpq*(T4(i)-T5(i))./(cpq.*eta_t);
+            p5(i) = p4(i)*(T5s(i)/T4(i)).^(kq/((kq-1)));
+
+            Te(i) = T5(i).*(pe./p5(i)).^((kq-1)/kq);
+
+            V5 = 0;             <span class="comment">% Aproximar que a velocidade anterior ao nozzle &eacute; nula</span>
+
+            Ves(i) = real(sqrt((V5^2) - 2*cpq*(Te(i)-T5(i))));
+            Ve(i) = sqrt(eta_n)*Ves(i);
+
+        <span class="keyword">if</span> ~(it(i)&lt;100 &amp;&amp; erro&gt;0.001)       <span class="comment">% Condi&ccedil;&otilde;es de fim de itera&ccedil;&atilde;o</span>
+            <span class="keyword">break</span>;
+        <span class="keyword">end</span>
+
+        T4(i) = T3(i) + m.*(Ve(i)^2-V0^2)./(eta_thermal(i)*m*2*cpq);
+
+        erro = abs((T4(i)-T4_it(i))/T4_it(i));
+        it(i) = it(i)+1;
+
+        <span class="keyword">end</span>
+
+        Thrust(i) = m*(Ve(i)-V0);
+
+        Q(i) = m*cpq.*(T4(i)-T3(i))./0.8;   <span class="comment">% Aproximar que 80% da energia calor&iacute;fica &eacute; &uacute;til</span>
+
+        <span class="comment">% C&aacute;lculo da massa por kg/s de combust&iacute;vel e de cada componente</span>
+
+        m_fuel(i) = Q(i)/H_ker;
+        m_CO2(i) = 3.160*m_fuel(i);
+        m_H20(i) = 1.260*m_fuel(i);
+        m_SO2(i) = 0.8*10^(-3)*m_fuel(i);
+        m_CO(i) =  0.6*10^(-3)*m_fuel(i);
+        m_UHC(i) = 0.01*10^(-3)*m_fuel(i);
+        EINox(i) = 10^(1 + 0.0032*(T3(i) - 581.25)) * sqrt(pa/101325); <span class="comment">% A4 - 25 - Lipfert</span>
+        m_NOX(i) = EINox(i)*m_fuel(i);
+        m_poluentes(i) = m_CO2(i) + m_H20(i) + m_SO2(i) + m_CO(i) + m_UHC(i) + m_NOX(i);
+
+        <span class="comment">% C&aacute;lculo das restantes efici&ecirc;ncias</span>
+
+        eta_j(i) = 2./(1 + Ve(i)/V0);           <span class="comment">% Efici&ecirc;ncia propulsiva</span>
+        eta_total(i) = eta_j(i)*eta_thermal(i); <span class="comment">% C&aacute;lculo da efici&ecirc;ncia total</span>
+<span class="keyword">end</span>
+</pre>
+<h2 id="4">Plots</h2>
+<pre class="codeinput">figure()
+plot(eta_thermal, Thrust./m_poluentes)
+ylabel(<span class="string">'Thrust/massa poluentes (N/kg/s)'</span>);
+xlabel(<span class="string">'Efici&ecirc;ncia T&eacute;rmica'</span>);
+title(<span class="string">'Efeito da efici&ecirc;ncia T&eacute;rmica na propor&ccedil;&atilde;o Thrust por kg de poluente'</span>)
+xlim([0.2,1])
+
+figure()
+loglog(eta_thermal, m_fuel)
+ylabel(<span class="string">'Massa de combust&iacute;vel (kg/s)'</span>);
+xlabel(<span class="string">'Efici&ecirc;ncia T&eacute;rmica'</span>);
+title(<span class="string">'Efeito da efici&ecirc;ncia T&eacute;rmica no consumo de combust&iacute;vel'</span>)
+xlim([0,1])
+
+figure()
+loglog(eta_thermal,Thrust)
+xlabel(<span class="string">'Efici&ecirc;ncia T&eacute;rmica'</span>);
+ylabel(<span class="string">'Thrust (N)'</span>);
+title(<span class="string">'Efeito da efici&ecirc;ncia T&eacute;rmica no Thrust'</span>)
+xlim([0.2,1])
+
+figure()
+plot(eta_thermal,eta_j)
+ylabel(<span class="string">'Efici&ecirc;ncia de Froude'</span>);
+xlabel(<span class="string">'Efici&ecirc;ncia T&eacute;rmica'</span>);
+title(<span class="string">'Efeito da efici&ecirc;ncia T&eacute;rmica na efici&ecirc;ncia de Froude'</span>)
+ylim([-1,1])
+
+figure()
+plot(eta_thermal,eta_total)
+xlabel(<span class="string">'Efici&ecirc;ncia T&eacute;rmica'</span>);
+ylabel(<span class="string">'Efici&ecirc;ncia Total'</span>);
+title(<span class="string">'Efeito da efici&ecirc;ncia T&eacute;rmica na efici&ecirc;ncia total'</span>)
+ylim([-1,1])
+
+figure()
+loglog(eta_thermal,m_poluentes)
+xlabel(<span class="string">'Efici&ecirc;ncia T&eacute;rmica'</span>);
+ylabel(<span class="string">'Massa de Poluentes (kg/s)'</span>);
+title(<span class="string">'Efeito da efici&ecirc;ncia T&eacute;rmica na produ&ccedil;&atilde;o de poluentes'</span>)
+xlim([0,1])
+</pre>
+<img vspace="5" hspace="5" src="Eficiencia_Thermal_01.png" alt=""> <img vspace="5" hspace="5" src="Eficiencia_Thermal_02.png" alt=""> <img vspace="5" hspace="5" src="Eficiencia_Thermal_03.png" alt=""> <img vspace="5" hspace="5" src="Eficiencia_Thermal_04.png" alt=""> <img vspace="5" hspace="5" src="Eficiencia_Thermal_05.png" alt=""> <img vspace="5" hspace="5" src="Eficiencia_Thermal_06.png" alt=""> <p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2023b</a>
+<br>
+</p>
+</div>
+<!--
+##### SOURCE BEGIN #####
+%% Projeto de Emissões - Estudo da eficiência térmica
+% Realizado por:
+% Íris Alves (105856),
+% Carolina Martins (105872),
+% Raquel Figueira (105896),
+% Diogo Martins (105980),
+% Francisco Rodrigues (106298) e
+% Rafael Santos (106599)
+
+%% Limpeza de memória
+clc, clearvars, close all
+
+%% Constantes
+
+% Termodinâmicas
+R = 287;                        % Constante universal dos gases para o ar
+kf = 1.4;                       % ratio of the specific heat do ar para baixas temperaturas
+kq = 1.333;                     % ratio of the specific heat do ar para altas temperaturas
+cpf = (kf * R)/(kf - 1);        % Calor específico a pressão constante a baixas temperaturas
+cpq = (kq * R)/(kq - 1);        % Calor específico a pressão constante a altas temperaturas
+
+% Eficiências 
+size = 1001;                    % Tamanho dos vetores
+eta_c = 0.822;                  % Eficiência isentrópica do compressor
+eta_t = 0.882;                  % Eficiência isentrópica da turbina
+eta_thermal = linspace(0.2,1,size); % Valores arbitrários
+eta_n = 0.97;                   % Eficiência isentrópica do nozzle
+
+% Design
+Rp = 8.3;           % Rácio de pressão
+m = 24;             % Mass Flow Rate (kg/s)
+
+% Condições Exteriores - a cruise altitude 40000ft
+V0 = 563*10^3/3600;     % Velocidade de entrada do ar
+Ta = 216.65;            % Temperatura atmosférica
+pa = 18832.8;           % Pressão atmosférica
+den = 0.30333;          % Densidade do ar
+a = sqrt(kf*R*Ta);      % Velocidade do som
+Ma = V0/a;              % Número de Mach
+
+H_ker = 43.260*10^6;  % Calorific value of kerosene
+
+%% Cálculos
+
+p2 = pa + (den*V0^2)/2;     % Aproximação de que p2 é igual à pressão de total em a
+T2 = Ta;                    % Aproximação de que T2 = Ta
+pe = pa;                    % Aproximação de que a pressão de saída é igual à pressão a
+p3 = Rp*p2;       
+
+T3s = T2*(p3/p2)^((kf-1)/kf);
+
+% Dado a falta de equações para o número de variáveis, efetua-se um
+% processo iterativo de erro < 0.001
+
+for i=1:size
+
+        T3(i) = T2 + (T3s - T2)./eta_c;
+        W(i) = m*(cpf*(T3(i)-T2));          % Trabalho necessário para o compressor
+
+        p4(i) = p3;
+
+        T4(i) = 1260;     %valor de iteração inicial
+        erro = 1;         % Iniciar a variável erro
+        it(i) = 0;        % Zerar o contador de iterações
+
+        while(1)
+
+            T4_it(i) = T4(i);   % Definição do valor da iteração inicial
+
+            T5(i) = T4(i) - W(i)/(m*cpq);
+            T5s(i) = T4(i) + cpq*(T4(i)-T5(i))./(cpq.*eta_t);
+            p5(i) = p4(i)*(T5s(i)/T4(i)).^(kq/((kq-1)));
+        
+            Te(i) = T5(i).*(pe./p5(i)).^((kq-1)/kq);
+
+            V5 = 0;             % Aproximar que a velocidade anterior ao nozzle é nula 
+
+            Ves(i) = real(sqrt((V5^2) - 2*cpq*(Te(i)-T5(i))));
+            Ve(i) = sqrt(eta_n)*Ves(i);
+
+        if ~(it(i)<100 && erro>0.001)       % Condições de fim de iteração
+            break;
+        end
+        
+        T4(i) = T3(i) + m.*(Ve(i)^2-V0^2)./(eta_thermal(i)*m*2*cpq); 
+
+        erro = abs((T4(i)-T4_it(i))/T4_it(i));
+        it(i) = it(i)+1;
+
+        end  
+
+        Thrust(i) = m*(Ve(i)-V0);
+        
+        Q(i) = m*cpq.*(T4(i)-T3(i))./0.8;   % Aproximar que 80% da energia calorífica é útil
+
+        % Cálculo da massa por kg/s de combustível e de cada componente 
+
+        m_fuel(i) = Q(i)/H_ker;
+        m_CO2(i) = 3.160*m_fuel(i);
+        m_H20(i) = 1.260*m_fuel(i);
+        m_SO2(i) = 0.8*10^(-3)*m_fuel(i);
+        m_CO(i) =  0.6*10^(-3)*m_fuel(i);
+        m_UHC(i) = 0.01*10^(-3)*m_fuel(i);
+        EINox(i) = 10^(1 + 0.0032*(T3(i) - 581.25)) * sqrt(pa/101325); % A4 - 25 - Lipfert
+        m_NOX(i) = EINox(i)*m_fuel(i);
+        m_poluentes(i) = m_CO2(i) + m_H20(i) + m_SO2(i) + m_CO(i) + m_UHC(i) + m_NOX(i);
+
+        % Cálculo das restantes eficiências
+
+        eta_j(i) = 2./(1 + Ve(i)/V0);           % Eficiência propulsiva
+        eta_total(i) = eta_j(i)*eta_thermal(i); % Cálculo da eficiência total
+end
+
+
+%% Plots
+
+figure()
+plot(eta_thermal, Thrust./m_poluentes)
+ylabel('Thrust/massa poluentes (N/kg/s)');
+xlabel('Eficiência Térmica');
+title('Efeito da eficiência Térmica na proporção Thrust por kg de poluente')
+xlim([0.2,1])
+
+figure()
+loglog(eta_thermal, m_fuel)
+ylabel('Massa de combustível (kg/s)');
+xlabel('Eficiência Térmica');
+title('Efeito da eficiência Térmica no consumo de combustível')
+xlim([0,1])
+
+figure()
+loglog(eta_thermal,Thrust)
+xlabel('Eficiência Térmica');
+ylabel('Thrust (N)');
+title('Efeito da eficiência Térmica no Thrust')
+xlim([0.2,1])
+
+figure()
+plot(eta_thermal,eta_j)
+ylabel('Eficiência de Froude');
+xlabel('Eficiência Térmica');
+title('Efeito da eficiência Térmica na eficiência de Froude')
+ylim([-1,1])
+
+figure()
+plot(eta_thermal,eta_total)
+xlabel('Eficiência Térmica');
+ylabel('Eficiência Total');
+title('Efeito da eficiência Térmica na eficiência total')
+ylim([-1,1])
+
+figure()
+loglog(eta_thermal,m_poluentes)
+xlabel('Eficiência Térmica');
+ylabel('Massa de Poluentes (kg/s)');
+title('Efeito da eficiência Térmica na produção de poluentes')
+xlim([0,1])
+
+
+##### SOURCE END #####
+-->
+</body>
+</html>
