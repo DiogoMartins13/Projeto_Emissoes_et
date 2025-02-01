@@ -9,7 +9,7 @@ To make changes, update the MATLAB code and republish this document.
 <title>Projeto de Emiss&otilde;es - Estudo da efici&ecirc;ncia t&eacute;rmica</title>
 <meta name="generator" content="MATLAB 23.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2025-01-30">
+<meta name="DC.date" content="2025-02-01">
 <meta name="DC.source" content="Eficiencia_Thermal.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -113,7 +113,7 @@ cpq = (kq * R)/(kq - 1);        <span class="comment">% Calor espec&iacute;fico 
 size = 1001;                    <span class="comment">% Tamanho dos vetores</span>
 eta_c = 0.822;                  <span class="comment">% Efici&ecirc;ncia isentr&oacute;pica do compressor</span>
 eta_t = 0.882;                  <span class="comment">% Efici&ecirc;ncia isentr&oacute;pica da turbina</span>
-eta_thermal = linspace(0.2,1,size); <span class="comment">% Valores arbitr&aacute;rios</span>
+eta_thermal = linspace(0,1,size); <span class="comment">% Valores arbitr&aacute;rios</span>
 eta_n = 0.97;                   <span class="comment">% Efici&ecirc;ncia isentr&oacute;pica do nozzle</span>
 
 <span class="comment">% Design</span>
@@ -131,7 +131,7 @@ Ma = V0/a;              <span class="comment">% N&uacute;mero de Mach</span>
 H_ker = 43.260*10^6;  <span class="comment">% Calorific value of kerosene</span>
 </pre>
 <h2 id="3">C&aacute;lculos</h2>
-<pre class="codeinput">p2 = pa + (den*V0^2)/2;     <span class="comment">% Aproxima&ccedil;&atilde;o de que p2 &eacute; igual &agrave; press&atilde;o de total em a</span>
+<pre class="codeinput">p2 = pa + (den*V0^2)/2;     <span class="comment">% Aproxima&ccedil;&atilde;o de que p2 &eacute; igual &agrave; press&atilde;o total em a</span>
 T2 = Ta;                    <span class="comment">% Aproxima&ccedil;&atilde;o de que T2 = Ta</span>
 pe = pa;                    <span class="comment">% Aproxima&ccedil;&atilde;o de que a press&atilde;o de sa&iacute;da &eacute; igual &agrave; press&atilde;o a</span>
 p3 = Rp*p2;
@@ -202,24 +202,60 @@ T3s = T2*(p3/p2)^((kf-1)/kf);
 </pre>
 <h2 id="4">Plots</h2>
 <pre class="codeinput">figure()
-plot(eta_thermal, Thrust./m_poluentes)
-ylabel(<span class="string">'Thrust/massa poluentes (N/kg/s)'</span>);
+loglog(eta_thermal,Thrust)
 xlabel(<span class="string">'Efici&ecirc;ncia T&eacute;rmica'</span>);
-title(<span class="string">'Efeito da efici&ecirc;ncia T&eacute;rmica na propor&ccedil;&atilde;o Thrust por kg de poluente'</span>)
-xlim([0.2,1])
-
-figure()
-loglog(eta_thermal, m_fuel)
-ylabel(<span class="string">'Massa de combust&iacute;vel (kg/s)'</span>);
-xlabel(<span class="string">'Efici&ecirc;ncia T&eacute;rmica'</span>);
-title(<span class="string">'Efeito da efici&ecirc;ncia T&eacute;rmica no consumo de combust&iacute;vel'</span>)
-xlim([0,1])
+ylabel(<span class="string">'Thrust (N)'</span>);
+title(<span class="string">'Efeito da efici&ecirc;ncia T&eacute;rmica no Thrust'</span>)
+xlim([0.11,1])
 
 figure()
 loglog(eta_thermal,Thrust)
 xlabel(<span class="string">'Efici&ecirc;ncia T&eacute;rmica'</span>);
 ylabel(<span class="string">'Thrust (N)'</span>);
 title(<span class="string">'Efeito da efici&ecirc;ncia T&eacute;rmica no Thrust'</span>)
+xlim([0.5,1])
+
+figure()
+loglog(eta_thermal, m_fuel)
+ylabel(<span class="string">'Massa de combust&iacute;vel (kg/s)'</span>);
+xlabel(<span class="string">'Efici&ecirc;ncia T&eacute;rmica'</span>);
+title(<span class="string">'Efeito da efici&ecirc;ncia T&eacute;rmica no consumo de combust&iacute;vel'</span>)
+xlim([0.2,1])
+
+figure()
+plot(eta_thermal, m_fuel)
+ylabel(<span class="string">'Massa de combust&iacute;vel (kg/s)'</span>);
+xlabel(<span class="string">'Efici&ecirc;ncia T&eacute;rmica'</span>);
+title(<span class="string">'Efeito da efici&ecirc;ncia T&eacute;rmica no consumo de combust&iacute;vel'</span>)
+xlim([0.5,1])
+
+figure()
+loglog(eta_thermal,m_poluentes)
+xlabel(<span class="string">'Efici&ecirc;ncia T&eacute;rmica'</span>);
+ylabel(<span class="string">'Massa de Poluentes (kg/s)'</span>);
+title(<span class="string">'Efeito da efici&ecirc;ncia T&eacute;rmica na produ&ccedil;&atilde;o de poluentes'</span>)
+xlim([0.2,1])
+
+figure()
+plot(eta_thermal,m_poluentes)
+xlabel(<span class="string">'Efici&ecirc;ncia T&eacute;rmica'</span>);
+ylabel(<span class="string">'Massa de Poluentes (kg/s)'</span>);
+title(<span class="string">'Efeito da efici&ecirc;ncia T&eacute;rmica na produ&ccedil;&atilde;o de poluentes'</span>)
+xlim([0.5,1])
+
+figure()
+plot(eta_thermal, Thrust./m_poluentes)
+ylabel(<span class="string">'Thrust/massa poluentes (N/kg/s)'</span>);
+xlabel(<span class="string">'Efici&ecirc;ncia T&eacute;rmica'</span>);
+title(<span class="string">'Ef. T&eacute;rmica vs Thrust por kg de poluente por seg'</span>)
+xlim([0.2,1])
+
+
+figure()
+plot(eta_thermal, Thrust./m_fuel)
+ylabel(<span class="string">'Thrust/consumo de combust&iacute;vel (N/kg/s)'</span>);
+xlabel(<span class="string">'Efici&ecirc;ncia T&eacute;rmica'</span>);
+title(<span class="string">'Ef. T&eacute;rmica vs Thrust por kg de fuel por seg'</span>)
 xlim([0.2,1])
 
 figure()
@@ -236,14 +272,30 @@ ylabel(<span class="string">'Efici&ecirc;ncia Total'</span>);
 title(<span class="string">'Efeito da efici&ecirc;ncia T&eacute;rmica na efici&ecirc;ncia total'</span>)
 ylim([-1,1])
 
+<span class="comment">% Gr&aacute;ficos n&atilde;o inclu&iacute;dos no projeto</span>
+
 figure()
-loglog(eta_thermal,m_poluentes)
+plot(T4,m_NOX)
+xlabel(<span class="string">'Temperatura &agrave; entrada da Turbina (K)'</span>);
+ylabel(<span class="string">'Massa de NOx (kg/s)'</span>);
+title(<span class="string">'Efeito da Temperatura T_4 na produ&ccedil;&atilde;o de NOx'</span>)
+xlim([0,1700])
+
+figure()
+loglog(eta_j,T4)
 xlabel(<span class="string">'Efici&ecirc;ncia T&eacute;rmica'</span>);
-ylabel(<span class="string">'Massa de Poluentes (kg/s)'</span>);
-title(<span class="string">'Efeito da efici&ecirc;ncia T&eacute;rmica na produ&ccedil;&atilde;o de poluentes'</span>)
-xlim([0,1])
+ylabel(<span class="string">'T4 (K)'</span>);
+title(<span class="string">'Efeito da efici&ecirc;ncia T&eacute;rmica na Temperatura T_4'</span>)
+xlim([0.1,1])
+
+figure()
+loglog(eta_thermal,m_NOX)
+xlabel(<span class="string">'Efici&ecirc;ncia T&eacute;rmica'</span>);
+ylabel(<span class="string">'Massa de NOx (kg/s)'</span>);
+title(<span class="string">'Efeito da efici&ecirc;ncia T&eacute;rmica na produ&ccedil;&atilde;o de NOx'</span>)
+xlim([0.2,1])
 </pre>
-<img vspace="5" hspace="5" src="Eficiencia_Thermal_01.png" alt=""> <img vspace="5" hspace="5" src="Eficiencia_Thermal_02.png" alt=""> <img vspace="5" hspace="5" src="Eficiencia_Thermal_03.png" alt=""> <img vspace="5" hspace="5" src="Eficiencia_Thermal_04.png" alt=""> <img vspace="5" hspace="5" src="Eficiencia_Thermal_05.png" alt=""> <img vspace="5" hspace="5" src="Eficiencia_Thermal_06.png" alt=""> <p class="footer">
+<img vspace="5" hspace="5" src="Eficiencia_Thermal_01.png" alt=""> <img vspace="5" hspace="5" src="Eficiencia_Thermal_02.png" alt=""> <img vspace="5" hspace="5" src="Eficiencia_Thermal_03.png" alt=""> <img vspace="5" hspace="5" src="Eficiencia_Thermal_04.png" alt=""> <img vspace="5" hspace="5" src="Eficiencia_Thermal_05.png" alt=""> <img vspace="5" hspace="5" src="Eficiencia_Thermal_06.png" alt=""> <img vspace="5" hspace="5" src="Eficiencia_Thermal_07.png" alt=""> <img vspace="5" hspace="5" src="Eficiencia_Thermal_08.png" alt=""> <img vspace="5" hspace="5" src="Eficiencia_Thermal_09.png" alt=""> <img vspace="5" hspace="5" src="Eficiencia_Thermal_10.png" alt=""> <img vspace="5" hspace="5" src="Eficiencia_Thermal_11.png" alt=""> <img vspace="5" hspace="5" src="Eficiencia_Thermal_12.png" alt=""> <img vspace="5" hspace="5" src="Eficiencia_Thermal_13.png" alt=""> <p class="footer">
 <br>
 <a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2023b</a>
 <br>
@@ -276,7 +328,7 @@ cpq = (kq * R)/(kq - 1);        % Calor específico a pressão constante a altas
 size = 1001;                    % Tamanho dos vetores
 eta_c = 0.822;                  % Eficiência isentrópica do compressor
 eta_t = 0.882;                  % Eficiência isentrópica da turbina
-eta_thermal = linspace(0.2,1,size); % Valores arbitrários
+eta_thermal = linspace(0,1,size); % Valores arbitrários
 eta_n = 0.97;                   % Eficiência isentrópica do nozzle
 
 % Design
@@ -295,7 +347,7 @@ H_ker = 43.260*10^6;  % Calorific value of kerosene
 
 %% Cálculos
 
-p2 = pa + (den*V0^2)/2;     % Aproximação de que p2 é igual à pressão de total em a
+p2 = pa + (den*V0^2)/2;     % Aproximação de que p2 é igual à pressão total em a
 T2 = Ta;                    % Aproximação de que T2 = Ta
 pe = pa;                    % Aproximação de que a pressão de saída é igual à pressão a
 p3 = Rp*p2;       
@@ -368,24 +420,60 @@ end
 %% Plots
 
 figure()
-plot(eta_thermal, Thrust./m_poluentes)
-ylabel('Thrust/massa poluentes (N/kg/s)');
+loglog(eta_thermal,Thrust)
 xlabel('Eficiência Térmica');
-title('Efeito da eficiência Térmica na proporção Thrust por kg de poluente')
-xlim([0.2,1])
-
-figure()
-loglog(eta_thermal, m_fuel)
-ylabel('Massa de combustível (kg/s)');
-xlabel('Eficiência Térmica');
-title('Efeito da eficiência Térmica no consumo de combustível')
-xlim([0,1])
+ylabel('Thrust (N)');
+title('Efeito da eficiência Térmica no Thrust')
+xlim([0.11,1])
 
 figure()
 loglog(eta_thermal,Thrust)
 xlabel('Eficiência Térmica');
 ylabel('Thrust (N)');
 title('Efeito da eficiência Térmica no Thrust')
+xlim([0.5,1])
+
+figure()
+loglog(eta_thermal, m_fuel)
+ylabel('Massa de combustível (kg/s)');
+xlabel('Eficiência Térmica');
+title('Efeito da eficiência Térmica no consumo de combustível')
+xlim([0.2,1])
+
+figure()
+plot(eta_thermal, m_fuel)
+ylabel('Massa de combustível (kg/s)');
+xlabel('Eficiência Térmica');
+title('Efeito da eficiência Térmica no consumo de combustível')
+xlim([0.5,1])
+
+figure()
+loglog(eta_thermal,m_poluentes)
+xlabel('Eficiência Térmica');
+ylabel('Massa de Poluentes (kg/s)');
+title('Efeito da eficiência Térmica na produção de poluentes')
+xlim([0.2,1])
+
+figure()
+plot(eta_thermal,m_poluentes)
+xlabel('Eficiência Térmica');
+ylabel('Massa de Poluentes (kg/s)');
+title('Efeito da eficiência Térmica na produção de poluentes')
+xlim([0.5,1])
+
+figure()
+plot(eta_thermal, Thrust./m_poluentes)
+ylabel('Thrust/massa poluentes (N/kg/s)');
+xlabel('Eficiência Térmica');
+title('Ef. Térmica vs Thrust por kg de poluente por seg')
+xlim([0.2,1])
+
+
+figure()
+plot(eta_thermal, Thrust./m_fuel)
+ylabel('Thrust/consumo de combustível (N/kg/s)');
+xlabel('Eficiência Térmica');
+title('Ef. Térmica vs Thrust por kg de fuel por seg')
 xlim([0.2,1])
 
 figure()
@@ -402,13 +490,28 @@ ylabel('Eficiência Total');
 title('Efeito da eficiência Térmica na eficiência total')
 ylim([-1,1])
 
-figure()
-loglog(eta_thermal,m_poluentes)
-xlabel('Eficiência Térmica');
-ylabel('Massa de Poluentes (kg/s)');
-title('Efeito da eficiência Térmica na produção de poluentes')
-xlim([0,1])
+% Gráficos não incluídos no projeto
 
+figure()
+plot(T4,m_NOX)
+xlabel('Temperatura à entrada da Turbina (K)');
+ylabel('Massa de NOx (kg/s)');
+title('Efeito da Temperatura T_4 na produção de NOx')
+xlim([0,1700])
+
+figure()
+loglog(eta_j,T4)
+xlabel('Eficiência Térmica');
+ylabel('T4 (K)');
+title('Efeito da eficiência Térmica na Temperatura T_4')
+xlim([0.1,1])
+
+figure()
+loglog(eta_thermal,m_NOX)
+xlabel('Eficiência Térmica');
+ylabel('Massa de NOx (kg/s)');
+title('Efeito da eficiência Térmica na produção de NOx')
+xlim([0.2,1])
 
 ##### SOURCE END #####
 -->
